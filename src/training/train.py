@@ -5,6 +5,7 @@ MLflow 3.x refuses a bare './mlruns' file store for the tracking backend, so
 we use a SQLite backend (also required for the Model Registry).
 """
 import json
+import shutil
 
 import joblib
 import mlflow
@@ -16,7 +17,9 @@ from sklearn.metrics import (
     accuracy_score, f1_score, precision_score, recall_score, roc_auc_score,
 )
 
-from src.utils.config import ID_COL, PROCESSED_DIR, RANDOM_SEED, REPORTS_DIR, TARGET_COL
+from src.utils.config import (
+    ID_COL, MODELS_DIR, PROCESSED_DIR, RANDOM_SEED, REPORTS_DIR, TARGET_COL,
+)
 
 MLFLOW_TRACKING_URI = "sqlite:///mlflow.db"
 EXPERIMENT_NAME = "loan-approval"
@@ -80,6 +83,11 @@ def run(train_path=None, val_path=None) -> dict:
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     joblib.dump(best_model_obj, PROCESSED_DIR / "model.joblib")
+
+    # git-tracked copy for serving: Docker/Kubernetes/CI never need `dvc pull`
+    MODELS_DIR.mkdir(parents=True, exist_ok=True)
+    joblib.dump(best_model_obj, MODELS_DIR / "model.joblib")
+    shutil.copyfile(PROCESSED_DIR / "preprocessor.joblib", MODELS_DIR / "preprocessor.joblib")
 
     results["best_model"] = best_name
     results["registered_model_name"] = REGISTERED_MODEL_NAME

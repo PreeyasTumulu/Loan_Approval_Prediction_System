@@ -5,7 +5,7 @@
     "recall": 1.0,
     "f1": 0.8936170212765957,
     "roc_auc": 0.8073344280240832,
-    "run_id": "e4bde509c85444a0b1e4b4695fc02c07"
+    "run_id": "f8979a984d274bef869e527d66dfea66"
   },
   "random_forest": {
     "accuracy": 0.8152173913043478,
@@ -13,9 +13,9 @@
     "recall": 0.9365079365079365,
     "f1": 0.8740740740740741,
     "roc_auc": 0.7323481116584565,
-    "run_id": "9ec0ab51cae8452dbf1d520dea91bfb4"
+    "run_id": "d61b004c9ee24e9e8ebadf003881daaa"
   },
   "best_model": "logistic_regression",
   "registered_model_name": "loan-approval-model",
-  "registered_version": 4
+  "registered_version": 6
 }

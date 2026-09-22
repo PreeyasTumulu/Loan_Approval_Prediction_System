@@ -1,3 +1,4 @@
+import joblib
 import numpy as np
 import pandas as pd
 
@@ -28,9 +29,12 @@ def test_run_trains_tracks_and_exports_model(tmp_path, monkeypatch):
     val_path = tmp_path / "val.csv"
     train_df.to_csv(train_path, index=False)
     val_df.to_csv(val_path, index=False)
+    joblib.dump({"placeholder": True}, tmp_path / "preprocessor.joblib")
 
+    models_dir = tmp_path / "models"
     monkeypatch.setattr("src.training.train.PROCESSED_DIR", tmp_path)
     monkeypatch.setattr("src.training.train.REPORTS_DIR", tmp_path / "reports")
+    monkeypatch.setattr("src.training.train.MODELS_DIR", models_dir)
 
     results = run(train_path=train_path, val_path=val_path)
 
@@ -41,3 +45,5 @@ def test_run_trains_tracks_and_exports_model(tmp_path, monkeypatch):
 
     assert (tmp_path / "model.joblib").exists()
     assert (tmp_path / "reports" / "train_metrics.json").exists()
+    assert (models_dir / "model.joblib").exists()
+    assert (models_dir / "preprocessor.joblib").exists()

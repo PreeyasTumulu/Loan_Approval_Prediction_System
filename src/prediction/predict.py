@@ -4,13 +4,13 @@ import functools
 import joblib
 import pandas as pd
 
-from src.utils.config import CATEGORICAL_COLS, NUMERIC_COLS, PROCESSED_DIR
+from src.utils.config import CATEGORICAL_COLS, MODELS_DIR, NUMERIC_COLS
 
 
 @functools.lru_cache(maxsize=1)
 def _load_artifacts():
-    preprocessor = joblib.load(PROCESSED_DIR / "preprocessor.joblib")
-    model = joblib.load(PROCESSED_DIR / "model.joblib")
+    preprocessor = joblib.load(MODELS_DIR / "preprocessor.joblib")
+    model = joblib.load(MODELS_DIR / "model.joblib")
     return preprocessor, model
 
 

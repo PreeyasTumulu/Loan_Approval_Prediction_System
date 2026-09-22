@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest -q
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t loan-approval-api:ci .
+
+      - name: Smoke test container
+        run: |
+          docker run -d --name loan-api -p 8000:8000 loan-approval-api:ci
+          for i in $(seq 1 15); do
+            sleep 2
+            curl -sf http://localhost:8000/health && break
+          done
+          curl -sf http://localhost:8000/health
+          docker logs loan-api
+          docker stop loan-api
+
+      - name: Compute lowercase image name
+        id: vars
+        run: echo "image=ghcr.io/$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image to GHCR
+        if: github.event_name == 'push'
+        run: |
+          docker tag loan-approval-api:ci ${{ steps.vars.outputs.image }}:latest
+          docker tag loan-approval-api:ci ${{ steps.vars.outputs.image }}:${{ github.sha }}
+          docker push ${{ steps.vars.outputs.image }}:latest
+          docker push ${{ steps.vars.outputs.image }}:${{ github.sha }}

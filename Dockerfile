@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements-serving.txt
 
 COPY app.py .
 COPY src/ src/
-COPY data/processed/model.joblib data/processed/preprocessor.joblib data/processed/
+COPY models/ models/
 
 EXPOSE 8000
 

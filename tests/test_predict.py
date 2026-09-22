@@ -21,7 +21,7 @@ def test_predict_one_returns_valid_response(sample_raw_df_large, tmp_path, monke
     joblib.dump(preprocessor, tmp_path / "preprocessor.joblib")
     joblib.dump(model, tmp_path / "model.joblib")
 
-    monkeypatch.setattr("src.prediction.predict.PROCESSED_DIR", tmp_path)
+    monkeypatch.setattr("src.prediction.predict.MODELS_DIR", tmp_path)
     _load_artifacts.cache_clear()
 
     applicant = {
