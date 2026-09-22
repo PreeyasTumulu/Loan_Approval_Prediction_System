@@ -1,9 +1,4 @@
-# Data (DVC-tracked, not git)
-data/raw/*
-data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-*.dvc.lock
+# Data is DVC-tracked; DVC manages its own .gitignore entries per directory
 
 # Python
 __pycache__/
