@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: loan-approval-api
+    metrics_path: /metrics
+    static_configs:
+      # NodePort service from Phase 8, reachable from the host (and from
+      # containers via Docker Desktop's built-in host.docker.internal DNS)
+      - targets: ["host.docker.internal:30080"]
