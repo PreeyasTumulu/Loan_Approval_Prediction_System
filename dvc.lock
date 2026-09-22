@@ -1,0 +1,70 @@
+schema: '2.0'
+stages:
+  validate:
+    cmd: python -m src.validation.schema
+    deps:
+    - path: data/raw/loan_train.csv
+      hash: md5
+      md5: 3bc055a1d2cca0386fa2d03864fe9b0a
+      size: 38013
+    - path: src/ingestion/load_data.py
+      hash: md5
+      md5: d98becb8e49a2b4bd7de119e807e2487
+      size: 225
+    - path: src/utils/config.py
+      hash: md5
+      md5: 8cf96fc2a8a20ae72aa6fb579bde220a
+      size: 1026
+    - path: src/validation/schema.py
+      hash: md5
+      md5: 2495233de27c3cdbdadef00401f118fb
+      size: 2612
+    outs:
+    - path: reports/data_validation.json
+      hash: md5
+      md5: 8fe2434da163efa93e494073a02923f1
+      size: 56
+  transform:
+    cmd: python -m src.transformation.features
+    deps:
+    - path: data/raw/loan_train.csv
+      hash: md5
+      md5: 3bc055a1d2cca0386fa2d03864fe9b0a
+      size: 38013
+    - path: reports/data_validation.json
+      hash: md5
+      md5: 8fe2434da163efa93e494073a02923f1
+      size: 56
+    - path: src/ingestion/load_data.py
+      hash: md5
+      md5: d98becb8e49a2b4bd7de119e807e2487
+      size: 225
+    - path: src/transformation/features.py
+      hash: md5
+      md5: 11f551fe8ca0d67802833a934aae03ca
+      size: 2824
+    - path: src/utils/config.py
+      hash: md5
+      md5: 8cf96fc2a8a20ae72aa6fb579bde220a
+      size: 1026
+    - path: src/validation/schema.py
+      hash: md5
+      md5: 2495233de27c3cdbdadef00401f118fb
+      size: 2612
+    outs:
+    - path: data/processed/preprocessor.joblib
+      hash: md5
+      md5: 2efaf326afe0a3007d0eddad8aec595d
+      size: 4397
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 4a7a25a04c70d90894fc3aa7b33bbb7f
+      size: 9779
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 4829c484c22c61f390c807022337798d
+      size: 43551
+    - path: data/processed/val.csv
+      hash: md5
+      md5: ab2899c5c1b842d51275147f1d92b8fc
+      size: 9700
