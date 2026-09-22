@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from src.transformation.features import build_preprocessor, split_data, run
 from src.utils.config import CATEGORICAL_COLS, ID_COL, NUMERIC_COLS, TARGET_COL
@@ -47,7 +48,6 @@ def test_run_writes_processed_splits_and_preprocessor(sample_raw_df_large, tmp_p
         assert (tmp_path / f"{name}.csv").exists()
     assert (tmp_path / "preprocessor.joblib").exists()
 
-    import pandas as pd
     train_out = pd.read_csv(tmp_path / "train.csv")
     assert set(train_out[TARGET_COL].unique()) <= {0, 1}
     assert not train_out.isna().any().any()

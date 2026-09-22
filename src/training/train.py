@@ -66,7 +66,7 @@ def run(train_path=None, val_path=None) -> dict:
             metrics = evaluate(model, X_val, y_val)
 
             mlflow.log_param("model_type", name)
-            mlflow.log_params({k: v for k, v in model.get_params().items()})
+            mlflow.log_params(model.get_params())
             mlflow.log_metrics(metrics)
             model_info = mlflow.sklearn.log_model(
                 model, name="model",
