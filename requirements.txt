@@ -27,6 +27,7 @@ antlr4-python3-runtime==4.9.3
     #   omegaconf
 anyio==4.15.1
     # via
+    #   httpx
     #   mlflow-skinny
     #   starlette
 appdirs==1.4.4
@@ -54,7 +55,10 @@ celery==5.6.3
     #   dvc
     #   dvc-task
 certifi==2026.7.22
-    # via requests
+    # via
+    #   httpcore
+    #   httpx
+    #   requests
 cffi==2.1.1
     # via
     #   cryptography
@@ -193,7 +197,13 @@ greenlet==3.5.6
 gto==1.10.1
     # via dvc
 h11==0.16.0
-    # via uvicorn
+    # via
+    #   httpcore
+    #   uvicorn
+httpcore==1.0.9
+    # via httpx
+httpx==0.28.1
+    # via -r requirements.in
 huey==3.4.0
     # via mlflow
 hydra-core==1.3.7
@@ -201,6 +211,7 @@ hydra-core==1.3.7
 idna==3.20
     # via
     #   anyio
+    #   httpx
     #   requests
     #   yarl
 importlib-metadata==9.0.1

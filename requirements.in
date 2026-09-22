@@ -6,4 +6,5 @@ fastapi
 uvicorn
 pydantic
 pytest
+httpx
 prometheus-fastapi-instrumentator
