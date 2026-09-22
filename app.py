@@ -2,6 +2,7 @@
 from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException
+from prometheus_client import Counter
 from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel, Field
 
@@ -9,6 +10,12 @@ from src.prediction.predict import predict_one
 
 app = FastAPI(title="Loan Approval Prediction API")
 Instrumentator().instrument(app).expose(app)  # GET /metrics for Prometheus
+
+# ML-specific signal: watches the MODEL's behavior (is it drifting toward
+# approving/rejecting everything?), not just whether the service is up.
+PREDICTION_COUNTER = Counter(
+    "loan_predictions_total", "Loan prediction outcomes by status", ["status"],
+)
 
 
 class LoanApplicationRequest(BaseModel):
@@ -38,9 +45,11 @@ def health():
 @app.post("/predict", response_model=LoanApplicationResponse)
 def predict(applicant: LoanApplicationRequest):
     try:
-        return predict_one(applicant.model_dump())
+        result = predict_one(applicant.model_dump())
     except FileNotFoundError as exc:
         raise HTTPException(
             status_code=503,
             detail="Model artifacts not found — run the training pipeline first.",
         ) from exc
+    PREDICTION_COUNTER.labels(status=result["loan_status"]).inc()
+    return result

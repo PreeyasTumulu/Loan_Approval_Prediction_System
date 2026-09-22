@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app import app
+from app import PREDICTION_COUNTER, app
 
 client = TestClient(app)
 
@@ -29,9 +29,14 @@ def test_predict_valid_payload(monkeypatch):
         "app.predict_one",
         lambda applicant: {"loan_status": "Approved", "approval_probability": 0.87},
     )
+    before = PREDICTION_COUNTER.labels(status="Approved")._value.get()
+
     response = client.post("/predict", json=VALID_APPLICANT)
+
     assert response.status_code == 200
     assert response.json() == {"loan_status": "Approved", "approval_probability": 0.87}
+    after = PREDICTION_COUNTER.labels(status="Approved")._value.get()
+    assert after == before + 1
 
 
 def test_predict_rejects_invalid_category():

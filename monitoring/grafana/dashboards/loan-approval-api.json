@@ -58,6 +58,35 @@
       "targets": [
         { "expr": "sum(http_requests_total)", "refId": "A" }
       ]
+    },
+    {
+      "id": 5,
+      "title": "Prediction Outcomes (Approved vs Rejected)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "ML-specific signal: watches the model's decision behavior over time, not just service health. A sudden shift here (e.g. approval rate spiking) can mean data drift or a bug, even while every other panel looks fine.",
+      "targets": [
+        {
+          "expr": "sum(rate(loan_predictions_total[5m])) by (status)",
+          "legendFormat": "{{status}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Approval Rate (%)",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent" }, "overrides": [] },
+      "targets": [
+        {
+          "expr": "100 * (sum(loan_predictions_total{status=\"Approved\"}) or vector(0)) / sum(loan_predictions_total)",
+          "refId": "A"
+        }
+      ]
     }
   ]
 }
