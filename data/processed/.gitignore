@@ -2,3 +2,4 @@
 /val.csv
 /test.csv
 /preprocessor.joblib
+/model.joblib

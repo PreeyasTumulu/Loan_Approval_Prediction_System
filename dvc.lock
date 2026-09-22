@@ -41,8 +41,8 @@ stages:
       size: 225
     - path: src/transformation/features.py
       hash: md5
-      md5: 11f551fe8ca0d67802833a934aae03ca
-      size: 2824
+      md5: 314ceceb597ced8cb108baa9ef906549
+      size: 2892
     - path: src/utils/config.py
       hash: md5
       md5: 8cf96fc2a8a20ae72aa6fb579bde220a
@@ -54,17 +54,45 @@ stages:
     outs:
     - path: data/processed/preprocessor.joblib
       hash: md5
-      md5: 2efaf326afe0a3007d0eddad8aec595d
-      size: 4397
+      md5: e10e85b7be49faa5588456538b46d449
+      size: 4893
     - path: data/processed/test.csv
       hash: md5
-      md5: 4a7a25a04c70d90894fc3aa7b33bbb7f
-      size: 9779
+      md5: 68c90eb023c9cb382ac943b2114e2ae4
+      size: 16281
     - path: data/processed/train.csv
       hash: md5
-      md5: 4829c484c22c61f390c807022337798d
-      size: 43551
+      md5: 2a655cf2a2525a74ffcbcb88855a899d
+      size: 73442
     - path: data/processed/val.csv
       hash: md5
-      md5: ab2899c5c1b842d51275147f1d92b8fc
-      size: 9700
+      md5: b224d11bb2ab3794e853adec9e15676b
+      size: 16097
+  train:
+    cmd: python -m src.training.train
+    deps:
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 2a655cf2a2525a74ffcbcb88855a899d
+      size: 73442
+    - path: data/processed/val.csv
+      hash: md5
+      md5: b224d11bb2ab3794e853adec9e15676b
+      size: 16097
+    - path: src/training/train.py
+      hash: md5
+      md5: 24d8feb45468f539f3af3cd602eb5277
+      size: 3263
+    - path: src/utils/config.py
+      hash: md5
+      md5: 8cf96fc2a8a20ae72aa6fb579bde220a
+      size: 1026
+    outs:
+    - path: data/processed/model.joblib
+      hash: md5
+      md5: 8765a40638f03a3a3b9668ff0d1b8e4c
+      size: 1727
+    - path: reports/train_metrics.json
+      hash: md5
+      md5: 4bb897326d5fe7f93349fbe63e53cc3d
+      size: 623

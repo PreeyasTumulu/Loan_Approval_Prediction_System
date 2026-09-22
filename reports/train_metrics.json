@@ -1,0 +1,21 @@
+{
+  "logistic_regression": {
+    "accuracy": 0.8369565217391305,
+    "precision": 0.8076923076923077,
+    "recall": 1.0,
+    "f1": 0.8936170212765957,
+    "roc_auc": 0.8073344280240832,
+    "run_id": "e4bde509c85444a0b1e4b4695fc02c07"
+  },
+  "random_forest": {
+    "accuracy": 0.8152173913043478,
+    "precision": 0.8194444444444444,
+    "recall": 0.9365079365079365,
+    "f1": 0.8740740740740741,
+    "roc_auc": 0.7323481116584565,
+    "run_id": "9ec0ab51cae8452dbf1d520dea91bfb4"
+  },
+  "best_model": "logistic_regression",
+  "registered_model_name": "loan-approval-model",
+  "registered_version": 4
+}

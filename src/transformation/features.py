@@ -10,7 +10,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 from src.ingestion.load_data import load_raw_train
 from src.utils.config import (
@@ -21,7 +21,10 @@ from src.validation.schema import validate_or_raise
 
 
 def build_preprocessor() -> ColumnTransformer:
-    numeric_pipe = Pipeline([("impute", SimpleImputer(strategy="median"))])
+    numeric_pipe = Pipeline([
+        ("impute", SimpleImputer(strategy="median")),
+        ("scale", StandardScaler()),
+    ])
     categorical_pipe = Pipeline([
         ("impute", SimpleImputer(strategy="most_frequent")),
         ("encode", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),

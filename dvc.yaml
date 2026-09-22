@@ -24,3 +24,15 @@ stages:
       - data/processed/val.csv
       - data/processed/test.csv
       - data/processed/preprocessor.joblib
+
+  train:
+    cmd: python -m src.training.train
+    deps:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - src/training/train.py
+      - src/utils/config.py
+    outs:
+      - data/processed/model.joblib
+      - reports/train_metrics.json:
+          cache: false
