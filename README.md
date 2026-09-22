@@ -118,18 +118,3 @@ pytest -q
 ```
 All 18 tests use synthetic fixtures — none touch the real DVC-tracked data,
 so the suite passes identically on a clean CI runner with no dataset present.
-
-## Rubric (40 marks) — status
-
-| Component | Marks | Status |
-|---|---|---|
-| Git Practices | 4 | ✅ |
-| DVC Usage | 4 | ✅ |
-| Data Pipeline | 4 | ✅ |
-| Pytest Coverage | 4 | ✅ |
-| MLflow Tracking | 4 | ✅ |
-| FastAPI Service | 4 | ✅ |
-| Dockerization | 4 | ✅ |
-| GitHub Actions | 4 | ✅ |
-| Kubernetes Deployment | 4 | ✅ |
-| Monitoring & Dashboards | 4 | ✅ |
